@@ -1,7 +1,7 @@
 ﻿  locking.cpp
   Generating code
-  166 of 184 functions (90.2%) were compiled, the rest were copied from previous compilation.
-    76 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+  34 of 215 functions (15.8%) were compiled, the rest were copied from previous compilation.
+    32 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   locking.vcxproj -> M:\CMP202\week4\task 2\CMP202Week3\x64\Release\locking.exe

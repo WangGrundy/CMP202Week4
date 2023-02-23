@@ -26,13 +26,14 @@ using std::condition_variable;
 condition_variable cv;
 bool result_ready = false;
 
-void callAdd() {
+void callAdd(int threadNum) {
 
 	for (int i = 0; i < 10000000; i++) { //this number needs to be large enough for other threads to overwrite this
 		sleep_for(milliseconds(500));
 
 		std::unique_lock<std::mutex> lockName(bill_mutex);
 
+		std::cout << threadNum << " OUT\n";
 		bill.add(17, 29);
 		cv.notify_one();
 	}
@@ -54,10 +55,12 @@ int main(int argc, char* argv[])
 {
 
 	std::thread printThread(PrintOut);
-	std::thread producer(callAdd);
+	std::thread producer2(callAdd,2);
+	std::thread producer(callAdd, 1);
 
 	printThread.join();
 	producer.join();
+	producer2.join();
 
 	return 0;
 }
