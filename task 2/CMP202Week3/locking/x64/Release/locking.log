@@ -1,6 +1,7 @@
 ﻿  locking.cpp
   Generating code
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-  All 258 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  166 of 184 functions (90.2%) were compiled, the rest were copied from previous compilation.
+    76 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   locking.vcxproj -> M:\CMP202\week4\task 2\CMP202Week3\x64\Release\locking.exe

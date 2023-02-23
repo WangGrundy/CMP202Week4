@@ -26,54 +26,38 @@ using std::condition_variable;
 condition_variable cv;
 bool result_ready = false;
 
+void callAdd() {
 
-void callAdd(int threadNum) {
-	
-	sleep_for(seconds(1)); // wait for 1 second
-	
-	std::unique_lock<std::mutex> lockName(bill_mutex); //lock thread, so only 1 tread can add to the bill
-	
-	bill.add(1, 0); //add to bill
+	for (int i = 0; i < 10000000; i++) { //this number needs to be large enough for other threads to overwrite this
+		sleep_for(milliseconds(500));
 
-	result_ready = true; //result is ready to print
-	cv.notify_one(); //updates bill total for rest of threads
+		std::unique_lock<std::mutex> lockName(bill_mutex);
+
+		bill.add(17, 29);
+		cv.notify_one();
+	}
+	
 }
 
 void PrintOut() {
 
-	while (1 != 0) {
-		std::unique_lock<std::mutex> lockName(bill_mutex); //lock 
+	while (true) {
 
-		while (!result_ready) {
+		std::unique_lock<std::mutex> lockName2(bill_mutex);
+		cv.wait(lockName2);
 
-			cv.wait(lockName); //blocks the current thread until the condition variable is awakened
-		}
-
-
-		cout << "bill total: " << bill.total() << "\n";
-
-		result_ready = false;
+		cout << "Total: " << bill.total() << "\n";
 	}
-	
-
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	std::vector<std::thread> threadVector;
+
 	std::thread printThread(PrintOut);
+	std::thread producer(callAdd);
 
-	while (1 != 0) {
-		for (int i = 0; i < 10; i++) {
-			threadVector.push_back(std::thread(callAdd, i));
-		}
-	}
-	
-
-	for (std::thread& thread : threadVector) {
-		thread.join();
-	}
 	printThread.join();
+	producer.join();
 
 	return 0;
 }
